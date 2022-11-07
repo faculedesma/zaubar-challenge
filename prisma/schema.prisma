@@ -1,0 +1,30 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider             = "mysql"
+  url                  = env("DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model User {
+  id      String @id @default(uuid())
+  email   String @unique
+  name    String
+  surname String
+  files   File[]
+}
+
+model File {
+  id              String   @id @default(uuid())
+  filename        String
+  title           String
+  type            String
+  transcodedImage String
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  userId          String
+  user            User     @relation(fields: [userId], references: [id])
+}
