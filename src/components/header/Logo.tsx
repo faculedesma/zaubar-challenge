@@ -1,8 +1,13 @@
 import React from "react";
+import Link from "next/link";
 import styles from "./Header.module.scss";
 
 const Logo = () => {
-  return <div className={styles.logo}>Logo</div>;
+  return (
+    <Link href="/dashboard">
+      <div className={styles.logo}>Logo</div>
+    </Link>
+  );
 };
 
 export default Logo;

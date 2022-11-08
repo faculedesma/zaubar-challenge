@@ -1,17 +1,7 @@
-import Header from "@/components/header";
-import Filters from "@/components/filters";
 import Folders from "@/components/folders";
 import Media from "@/components/media";
-import styles from "../styles/App.module.scss";
-import { trpc } from "../utils/trpc";
+import Layout from "@/components/layout";
 
-export default function Home() {
-  return (
-    <div className={styles.app}>
-      <Header />
-      <Filters />
-      <Folders />
-      <Media />
-    </div>
-  );
+export default function Dashboard() {
+  return <div>Hi, i'm the dashboard</div>;
 }

@@ -1,0 +1,17 @@
+@import "../../utils/variables";
+
+.breadcrumbs {
+  margin: 30px 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  
+  a {
+    font-size: $medium-font-size;
+    font-weight: lighter;
+  }
+
+  svg {
+    margin: 0 10px;
+  }
+}

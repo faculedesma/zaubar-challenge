@@ -2,6 +2,9 @@ import React from "react";
 import { GrAdd } from "react-icons/gr";
 import { HiOutlineTrash } from "react-icons/hi";
 import { BsPencil } from "react-icons/bs";
+import Folders from "../folders";
+import Filters from "../filters";
+import Breadcrumbs from "../breadcrumbs";
 import styles from "./Media.module.scss";
 
 const AIGenerated =
@@ -74,45 +77,52 @@ const files = [
   },
 ];
 
-const Media = () => {
+const Media = ({ folderId }) => {
+  // get all folder files and data
+
   return (
-    <div className={styles.media}>
-      <div className={styles.title}>
-        <p>Media</p>
-        <button onClick={() => null}>
-          <GrAdd />
-        </button>
-      </div>
-      <div className={styles.list}>
-        {files.map((file) => (
-          <>
-            <div id={file.id} className={styles.card}>
-              {/* <div className={styles.container}>
+    <>
+      <Filters />
+      <Breadcrumbs />
+      <Folders />
+      <div className={styles.media}>
+        <div className={styles.title}>
+          <p>Media</p>
+          <button onClick={() => null}>
+            <GrAdd />
+          </button>
+        </div>
+        <div className={styles.list}>
+          {files.map((file) => (
+            <>
+              <div id={file.id} className={styles.card}>
+                {/* <div className={styles.container}>
               <img src={file.src} alt={file.filename} />
             </div> */}
-              <div className={styles.footer}>
-                <div className={styles.left}>
-                  <p>{file.title}</p>
-                  <p>{file.uploadedDate.toDateString()}</p>
+                <div className={styles.footer}>
+                  <div className={styles.left}>
+                    <p>{file.title}</p>
+                    <p>{file.uploadedDate.toDateString()}</p>
+                  </div>
+                  <div className={styles.right}>
+                    <button className={styles.edit}>
+                      <BsPencil />
+                    </button>
+                    <button className={styles.delete}>
+                      <HiOutlineTrash />
+                    </button>
+                  </div>
                 </div>
-                <div className={styles.right}>
-                  <button className={styles.edit}>
-                    <BsPencil />
-                  </button>
-                  <button className={styles.delete}>
-                    <HiOutlineTrash />
-                  </button>
-                </div>
-              </div>
-              {/* <div className={styles.selection}>
+                {/* <div className={styles.selection}>
                 <input type="checkbox" />
                 <label>Select</label>
               </div> */}
-            </div>
-          </>
-        ))}
+              </div>
+            </>
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
