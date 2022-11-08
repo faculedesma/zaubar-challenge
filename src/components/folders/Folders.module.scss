@@ -1,0 +1,63 @@
+@import "../../utils//variables";
+
+.folders {
+  margin-top: 40px;
+  padding: $container-padding;
+
+  .title {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .list {
+    display: flex;
+    justify-content: flex-start;
+
+    .item, .create {
+      width: 300px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      border-radius: 10px;
+      padding: 10px 20px;
+      margin-right: $standard-margin;
+      cursor: pointer;
+    }
+
+    .item {
+      background-color: $primary-color;
+      border: none;
+      justify-content: flex-start;
+  
+      span {
+        margin-left: 10px;
+      }
+    }
+
+    .item:hover {
+      animation: folder-hover 200ms ease-in-out forwards;
+    }
+
+    .create {
+      border-style: dotted;
+      background: none;
+      justify-content: space-between;
+    }
+    
+    .create:hover {
+      border-style: dashed;
+    }
+  }
+}
+
+@keyframes folder-hover {
+  0% {
+    background-color: $primary-color;
+    border: 0px solid $primary-color;
+  }
+  
+  100% {
+    background-color: $secondary-color-alternative;
+    border: 1px solid $primary-color;
+  }
+}

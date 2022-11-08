@@ -1,0 +1,192 @@
+@import '../../utils/variables';
+
+.filters {
+  height: 80px;
+  padding: 0 5%;
+  border-bottom: 2px solid $primary-color;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .common {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  
+    svg {
+      cursor: pointer;
+      margin-left: 5px;
+    }
+  }
+
+  .station, .filetype, .date {
+    position: relative;
+    cursor: pointer;
+  }
+
+  .station:hover,
+  .filetype:hover,
+  .date:hover {
+    .options {
+      transform: scale(1);
+    }
+  }
+
+  .date {
+    height: 30px;
+  
+    svg {
+      height: 100%;
+      width: 30px;
+      padding: 0 5px;
+      border: 1px solid $highlight-color;
+      border-radius: 5px;
+    }
+  }
+
+  .options {
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 200px;
+    min-height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    background-color: $secondary-color;
+    border: 1px solid $highlight-color;
+    border-radius: 3px;
+    padding: 7%;
+    transform: scale(0);
+    cursor: inherit;
+    z-index: 2;
+
+    .boxes {
+      height: 75%;
+
+      .box {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        margin-bottom: 10px; 
+         
+        input {
+          margin: 0;
+        }
+    
+        label {
+          font-size: 10px;
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .apply {
+      width: 100%;
+      height: 25%;
+
+      button {
+        width: 100%;
+        height: 30px;
+        border: 1px solid $highlight-color;
+        border-radius: 5px;
+        background: transparent;
+        cursor: pointer;
+      }
+    }
+
+  }
+
+  .group {
+    height: 30px;
+    border: 1px solid $highlight-color;
+    border-radius: 5px;
+    padding: 0 5px;
+    cursor: pointer;
+  }
+
+  .gallery {
+    height: 30px;
+
+    .views {
+      height: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border: 1px solid $highlight-color;
+      border-radius: 5px;
+      margin-left: 5px;
+      padding: 0 5px;
+
+      svg:last-child {
+        color: $primary-color;
+      }
+    }
+  }
+
+  .search {
+    width: 200px;
+    padding: 5px 0;
+    border-bottom: 1px solid $primary-color;
+    
+    input {
+      width: 100%;
+      font-size: 10px;
+      border: none;
+    }
+
+    input:focus,
+    input:active {
+      outline: none;
+    }
+  }
+
+  .add {
+    width: 100px;
+    height: 30px;
+    
+    button {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      cursor: pointer;
+    }
+  }
+
+  .selection {
+    width: 140px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    p {
+      margin: 0;
+    }
+    
+    .edit, .all {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .edit {
+      svg {
+        cursor: pointer;
+      }
+    }
+
+    .all {
+      input {
+        width: 20px;
+        height: 20px;
+        margin-bottom: 0;
+        margin-top: 0;
+      }
+    }
+  }
+}

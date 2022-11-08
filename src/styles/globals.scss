@@ -1,9 +1,15 @@
+@import "../utils/variables";
+
 html,
 body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  
+  p, span, a, label {
+    font-size: $main-font-size;
+  }
 }
 
 a {
@@ -11,17 +17,21 @@ a {
   text-decoration: none;
 }
 
+svg {
+  font-size: $svg-size;
+}
+
 * {
   box-sizing: border-box;
 }
 
-@media (prefers-color-scheme: dark) {
+@media (prefers-color-scheme: white) {
   html {
-    color-scheme: dark;
+    color-scheme: $secondary-color;
   }
   
   body {
-    color: white;
-    background: black;
+    color: $highlight-color;
+    background: $secondary-color;
   }
 }

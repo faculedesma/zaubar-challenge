@@ -1,0 +1,49 @@
+@import "../../utils/variables";
+
+.header {
+  height: 80px;
+  padding: $container-padding;
+  background-color: lightgray;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .logo {
+    cursor: pointer;
+    transform: scale(1);
+  }
+  
+  .logo:hover {
+    animation: logo-hover 200ms ease-in forwards;
+  }
+
+  .links {
+    a {
+      margin-left: 30px;
+      border-bottom: none;
+      padding-bottom: 30px;
+    }
+    
+    a:hover {
+      border-bottom: 2px solid $highlight-color;
+      transition: 100ms ease-in;
+    }
+
+    :last-child {
+      background-color: white;
+      padding: 10px 15px;
+      border-radius: 2px;
+    }
+  }
+}
+
+@keyframes logo-hover {
+  0% {
+    transform: scale(1);
+  }
+
+
+  100% {
+    transform: scale(1.1);
+  }
+}

@@ -1,10 +1,17 @@
-import styles from "../styles/Home.module.css";
+import Header from "@/components/header";
+import Filters from "@/components/filters";
+import Folders from "@/components/folders";
+import Media from "@/components/media";
+import styles from "../styles/App.module.scss";
 import { trpc } from "../utils/trpc";
 
 export default function Home() {
-  const { data, isLoading } = trpc.hello.useQuery({ text: "Facundo" });
-
-  if (isLoading) return <div>Loading...</div>;
-
-  return <div className={styles.container}>{data?.greeting}</div>;
+  return (
+    <div className={styles.app}>
+      <Header />
+      <Filters />
+      <Folders />
+      <Media />
+    </div>
+  );
 }
