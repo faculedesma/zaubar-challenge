@@ -1,35 +1,32 @@
 export const foldersMock = [
   {
     id: "folder-one",
+    parentId: null,
     name: "folder-one",
-    nested: [{ id: "folder-three", name: "folder-three" }],
-    breadcrumbs: [],
   },
   {
     id: "folder-two",
+    parentId: null,
     name: "folder-two",
-    nested: [
-      { id: "folder-four", name: "folder-four" },
-      { id: "folder-five", name: "folder-five" },
-    ],
-    breadcrumbs: [],
   },
   {
     id: "folder-three",
+    parentId: "folder-one",
     name: "folder-three",
-    nested: [],
-    breadcrumbs: ["folder-one"],
   },
   {
     id: "folder-four",
+    parentId: "folder-two",
     name: "folder-four",
-    nested: [],
-    breadcrumbs: ["folder-two"],
   },
   {
     id: "folder-five",
+    parentId: "folder-two",
     name: "folder-five",
-    nested: [],
-    breadcrumbs: ["folder-two"],
+  },
+  {
+    id: "folder-six",
+    parentId: "folder-three",
+    name: "folder-six",
   },
 ];

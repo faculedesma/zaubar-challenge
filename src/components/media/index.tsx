@@ -53,8 +53,6 @@ const Media = () => {
     setFilteredFiles(filesByFolder);
   }, [filters, folderId]);
 
-  console.log(filters.view);
-
   return (
     <>
       <Filters />

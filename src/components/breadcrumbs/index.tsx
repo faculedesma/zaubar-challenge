@@ -1,34 +1,56 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { SlArrowRight } from "react-icons/sl";
 import { foldersMock } from "../../constants/folders";
 import styles from "./Breadcrumbs.module.scss";
 
 const Breadcrumbs = () => {
   const router = useRouter();
+  const folderId = router.query.id;
+  const selectedFolder = foldersMock.find((folder) => folder.id === folderId);
+  const [breadcrumbs, setBreadcrumbs] = useState([]);
 
-  const { id } = router.query;
-  const folder = foldersMock.find((folder) => folder.id === id);
+  useEffect(() => {
+    getBreadcrumbs();
+  }, [folderId]);
+
+  const getBreadcrumbs = () => {
+    const parentId = selectedFolder?.parentId;
+    const breads = [];
+
+    const findRecursive = (id) => {
+      const parentFolder = foldersMock.find((folder) => folder.id === id);
+      if (parentFolder) {
+        breads.push(parentFolder.id);
+        findRecursive(parentFolder.parentId);
+      }
+      return;
+    };
+
+    findRecursive(parentId);
+    setBreadcrumbs(breads.reverse());
+  };
 
   return (
     <div className={styles.breadcrumbs}>
       <Link href="/media">Home</Link>
       <SlArrowRight />
-      {folder?.breadcrumbs.map((breadId) => (
+      {breadcrumbs?.map((id) => (
         <>
           <Link
-            key={breadId}
+            key={id}
             href={{
               pathname: "/media/[id]",
-              query: { id: breadId },
+              query: { id },
             }}
           >
-            {foldersMock.find((folder) => breadId === folder.id)?.name}
+            {foldersMock.find((folder) => folder.id === id)?.name}
           </Link>
           <SlArrowRight />
         </>
       ))}
-      {folder?.name || "All"}
+      {selectedFolder?.name || "All"}
     </div>
   );
 };

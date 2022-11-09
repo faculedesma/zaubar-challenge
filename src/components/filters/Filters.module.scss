@@ -75,7 +75,7 @@
         }
     
         label {
-          font-size: 10px;
+          font-size: $small-font-size;
           margin-left: 10px;
         }
       }
@@ -144,7 +144,7 @@
     
     input {
       width: 100%;
-      font-size: 10px;
+      font-size: $small-font-size;
       border: none;
     }
 

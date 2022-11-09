@@ -12,6 +12,7 @@
     display: flex;
     justify-content: flex-start;
     gap: $standard-margin;
+    flex-wrap: wrap;
 
     .item, .create {
       width: 300px;
@@ -45,6 +46,27 @@
     
     .create:hover {
       border-style: dashed;
+    }
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .content {
+      input {
+        border: 1px solid $secondary-color-alternative;
+        border-radius: 2px;
+        font-size: $small-font-size;
+      }
     }
   }
 }

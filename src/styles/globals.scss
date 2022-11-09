@@ -25,6 +25,28 @@ svg {
   box-sizing: border-box;
 }
 
+#modal-root {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  background: black;
+  opacity: 0.5;
+  
+  > div {
+    width: 200px;
+    height: 100px;
+    background: $primary-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 @media (prefers-color-scheme: white) {
   html {
     color-scheme: $secondary-color;

@@ -11,7 +11,8 @@ const App: AppType = ({ Component, pageProps }: AppProps) => {
   return (
     <Layout>
       <FilterContext.Provider value={{ filters, setFilters }}>
-        <Component {...pageProps} />;
+        <Component {...pageProps} />
+        <div id="modal-root"></div>
       </FilterContext.Provider>
     </Layout>
   );

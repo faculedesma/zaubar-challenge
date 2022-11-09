@@ -1,26 +1,30 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import { MdFolderOpen } from "react-icons/md";
 import { BiFolderPlus } from "react-icons/bi";
 import { foldersMock } from "../../constants/folders";
-import Link from "next/link";
+import Modal from "../common/modal";
+import CreateFolderForm from "./CreateFolderForm";
 import styles from "./Folders.module.scss";
 
 const Folders = () => {
   const router = useRouter();
   const folderId = router.query.id;
   const [folders, setFolders] = useState([]);
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     if (!folderId) {
-      setFolders(
-        foldersMock.filter((folder) => folder.breadcrumbs.length === 0)
-      );
+      setFolders(foldersMock.filter((folder) => !folder.parentId));
       return;
     }
-    const folder = foldersMock.find((folder) => folder.id === folderId);
-    setFolders(folder?.nested);
+    setFolders(foldersMock.filter((folder) => folder.parentId === folderId));
   }, [folderId]);
+
+  const openCreateModal = () => setOpen(true);
+
+  const closeModal = () => setOpen(false);
 
   return (
     <div className={styles.folders}>
@@ -40,9 +44,19 @@ const Folders = () => {
             </div>
           </Link>
         ))}
-        <div className={styles.create}>
+        <div className={styles.create} onClick={openCreateModal}>
           <p>Create folder</p>
           <BiFolderPlus />
+          {open && (
+            <Modal>
+              <CreateFolderForm
+                folders={folders}
+                setFolders={setFolders}
+                folderId={folderId}
+                closeModal={closeModal}
+              />
+            </Modal>
+          )}
         </div>
       </div>
     </div>

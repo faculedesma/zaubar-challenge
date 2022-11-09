@@ -64,7 +64,10 @@ const Filters = () => {
     setFilters({ ...filters, view: id });
   };
 
-  const handleSearchChange = (value: string) => setSearch(value);
+  const handleSearchChange = (value: string) => {
+    setSearch(value);
+    setFilters({ ...filters, search: value });
+  };
 
   const handleDateChange = (id: string) => setDate(id);
 
@@ -120,10 +123,9 @@ const Filters = () => {
                   type="checkbox"
                   id={option.id}
                   checked={option.selected}
-                  onChange={(e) => {
-                    console.log(e.target.checked);
-                    handleFiletypeChange(e.target.checked, option.id);
-                  }}
+                  onChange={(e) =>
+                    handleFiletypeChange(e.target.checked, option.id)
+                  }
                 />
                 <label>{option.label}</label>
               </div>
@@ -197,13 +199,15 @@ const Filters = () => {
           <p>Add file</p>
           <AiOutlinePlus />
         </button>
-        <Modal
-          isOpen={open}
-          title="Add your files here"
-          closeModal={() => setOpen(false)}
-        >
-          <AddFile />
-        </Modal>
+        {open && (
+          <Modal
+            isOpen={open}
+            title="Add files"
+            closeModal={() => setOpen(false)}
+          >
+            <AddFile />
+          </Modal>
+        )}
       </div>
       <div className={styles.selection}>
         <div className={styles.edit}>
