@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import FilterContext from "@/contexts/FiltersContext";
 import { SlArrowDown } from "react-icons/sl";
 import {
   AiOutlineCalendar,
@@ -9,45 +10,79 @@ import { MdGridView, MdFolderOpen } from "react-icons/md";
 import { FiSearch } from "react-icons/fi";
 import { BsPencil } from "react-icons/bs";
 import styles from "./Filters.module.scss";
-
-const sortOptions = {
-  station: [
-    {
-      id: "2d",
-      label: "2D",
-    },
-    {
-      id: "3d",
-      label: "3D",
-    },
-  ],
-  filetype: [
-    {
-      id: "jpg",
-      label: "JPG",
-    },
-    {
-      id: "jpg",
-      label: "JPG",
-    },
-    {
-      id: "jpg",
-      label: "JPG",
-    },
-  ],
-  date: [
-    {
-      id: "newest",
-      label: "Newest to Oldest",
-    },
-    {
-      id: "oldest",
-      label: "Oldest to Newest",
-    },
-  ],
-};
+import Modal from "../common/modal";
+import AddFile from "../media/add-file/AddFile";
+import {
+  viewTypesOptions,
+  fileTypesOptions,
+  stationsOptions,
+  datesOptions,
+} from "@/constants/constants";
 
 const Filters = () => {
+  const { filters, setFilters } = useContext(FilterContext);
+
+  const currentStations = stationsOptions.map((station) => {
+    return {
+      ...station,
+      selected: Boolean(filters.stations.includes(station.id)),
+    };
+  });
+
+  const currentFiletypes = fileTypesOptions.map((file) => {
+    return { ...file, selected: filters.filetypes.includes(file.id) };
+  });
+
+  const [stations, setStations] = useState(currentStations);
+  const [filetypes, setFiletypes] = useState(currentFiletypes);
+  const [date, setDate] = useState(filters.date);
+  const [view, setView] = useState(filters.view);
+  const [search, setSearch] = useState(filters.search);
+  const [filesSelected, setFileSelected] = useState(filters.filesSelected);
+  const [open, setOpen] = useState(false);
+
+  const handleStationChange = (isSelected: boolean, id: string) => {
+    setStations(
+      stations.map((station) => {
+        if (station.id === id) return { ...station, selected: isSelected };
+        return { ...station };
+      })
+    );
+  };
+
+  const handleFiletypeChange = (isSelected: boolean, id: string) => {
+    setFiletypes(
+      filetypes.map((filetype) => {
+        if (filetype.id === id) return { ...filetype, selected: isSelected };
+        return { ...filetype };
+      })
+    );
+  };
+
+  const handleViewChange = (id: string) => {
+    setView(id);
+    setFilters({ ...filters, view: id });
+  };
+
+  const handleSearchChange = (value: string) => setSearch(value);
+
+  const handleDateChange = (id: string) => setDate(id);
+
+  const handleOpenFileModal = () => setOpen(true);
+
+  const handleGroupFiles = () => console.log("Group!");
+
+  const updateFilters = () => {
+    setFilters({
+      stations,
+      filetypes,
+      date,
+      view,
+      search,
+      filesSelected,
+    });
+  };
+
   return (
     <div className={styles.filters}>
       <div className={`${styles.station} ${styles.common}`}>
@@ -55,15 +90,22 @@ const Filters = () => {
         <SlArrowDown />
         <div className={styles.options}>
           <div className={styles.boxes}>
-            {sortOptions.station.map((option) => (
-              <div className={styles.box}>
-                <input type="checkbox" id={option.id} />
+            {stations.map((option) => (
+              <div key={option.id} className={styles.box}>
+                <input
+                  type="checkbox"
+                  id={option.id}
+                  checked={option.selected}
+                  onChange={(e) =>
+                    handleStationChange(e.target.checked, option.id)
+                  }
+                />
                 <label>{option.label}</label>
               </div>
             ))}
           </div>
           <div className={styles.apply}>
-            <button onClick={() => null}>Apply filter</button>
+            <button onClick={updateFilters}>Apply filter</button>
           </div>
         </div>
       </div>
@@ -72,58 +114,96 @@ const Filters = () => {
         <SlArrowDown />
         <div className={styles.options}>
           <div className={styles.boxes}>
-            {sortOptions.filetype.map((option) => (
+            {filetypes.map((option) => (
               <div className={styles.box}>
-                <input type="checkbox" id={option.id} />
+                <input
+                  type="checkbox"
+                  id={option.id}
+                  checked={option.selected}
+                  onChange={(e) => {
+                    console.log(e.target.checked);
+                    handleFiletypeChange(e.target.checked, option.id);
+                  }}
+                />
                 <label>{option.label}</label>
               </div>
             ))}
           </div>
           <div className={styles.apply}>
-            <button onClick={() => null}>Apply filter</button>
+            <button onClick={updateFilters}>Apply filter</button>
           </div>
         </div>
       </div>
-      <div className={`${styles.filetype} ${styles.common}`}>
+      <div className={`${styles.date} ${styles.common}`}>
         <p>Sort by date</p>
         <AiOutlineCalendar />
         <div className={styles.options}>
           <div className={styles.boxes}>
-            {sortOptions.date.map((option) => (
+            {datesOptions.map((option) => (
               <div className={styles.box}>
-                <input type="checkbox" id={option.id} />
+                <input
+                  type="checkbox"
+                  id={option.id}
+                  checked={option.id === date}
+                  onChange={() => handleDateChange(option.id)}
+                />
                 <label>{option.label}</label>
               </div>
             ))}
           </div>
           <div className={styles.apply}>
-            <button onClick={() => null}>Apply filter</button>
+            <button onClick={updateFilters}>Apply filter</button>
           </div>
         </div>
       </div>
-      <div className={`${styles.group} ${styles.common}`}>
-        <p>Group elements</p>
-        <MdFolderOpen />
+      <div
+        className={`${styles.group} ${styles.common}`}
+        title={`${
+          true ? "You need to select two or more files to group them." : ""
+        }`}
+      >
+        <button onClick={() => handleGroupFiles()} disabled={true}>
+          <p>Group elements</p>
+          <MdFolderOpen />
+        </button>
       </div>
       <div className={`${styles.gallery} ${styles.common}`}>
-        <p>Gallery view</p>
+        <p>
+          {viewTypesOptions.find((viewType) => viewType.id === view)?.label}{" "}
+          view
+        </p>
         <div className={styles.views}>
-          <MdGridView />
-          <AiOutlineUnorderedList />
+          <MdGridView
+            className={`${view === "list" && styles.disabled}`}
+            onClick={() => handleViewChange("gallery")}
+          />
+          <AiOutlineUnorderedList
+            className={`${view === "gallery" && styles.disabled}`}
+            onClick={() => handleViewChange("list")}
+          />
         </div>
       </div>
       <div className={`${styles.search} ${styles.common}`}>
         <input
+          value={search}
           type="text"
           placeholder="Search file by description or tag name"
+          onChange={(e) => handleSearchChange(e.target.value)}
         />
-        <FiSearch />
+        <FiSearch onClick={updateFilters} />
       </div>
       <div className={`${styles.add} ${styles.common}`}>
-        <button onClick={() => null}>
+        <button onClick={() => handleOpenFileModal()}>
           <p>Add file</p>
           <AiOutlinePlus />
         </button>
+        <Modal
+          isOpen={open}
+          title="Add your files here"
+          closeModal={() => setOpen(false)}
+        >
+          <AddFile />
+        </Modal>
       </div>
       <div className={styles.selection}>
         <div className={styles.edit}>

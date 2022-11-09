@@ -99,14 +99,27 @@
 
   .group {
     height: 30px;
-    border: 1px solid $highlight-color;
-    border-radius: 5px;
-    padding: 0 5px;
-    cursor: pointer;
+
+    button {
+      height: 100%;
+      border: 1px solid $highlight-color;
+      border-radius: 5px;
+      padding: 0 5px;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    :disabled {
+      border: 1px solid $primary-color;
+      cursor: inherit;
+    }
   }
 
   .gallery {
     height: 30px;
+    min-width: 135px;
 
     .views {
       height: 100%;
@@ -118,7 +131,7 @@
       margin-left: 5px;
       padding: 0 5px;
 
-      svg:last-child {
+      .disabled {
         color: $primary-color;
       }
     }
@@ -142,6 +155,7 @@
   }
 
   .add {
+    position: relative;
     width: 100px;
     height: 30px;
     
@@ -152,6 +166,11 @@
       align-items: center;
       justify-content: space-evenly;
       cursor: pointer;
+    }
+
+    .modal {
+      right: 0;
+      top: 0;
     }
   }
 

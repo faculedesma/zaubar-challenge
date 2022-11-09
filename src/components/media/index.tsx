@@ -1,84 +1,59 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import FilterContext from "@/contexts/FiltersContext";
 import { GrAdd } from "react-icons/gr";
 import { HiOutlineTrash } from "react-icons/hi";
 import { BsPencil } from "react-icons/bs";
 import Folders from "../folders";
 import Filters from "../filters";
 import Breadcrumbs from "../breadcrumbs";
+import { filesDefault } from "../../constants/filesDefault";
 import styles from "./Media.module.scss";
 
-const AIGenerated =
-  "https://static01.nyt.com/images/2022/09/01/business/00roose-1/merlin_212276709_3104aef5-3dc4-4288-bb44-9e5624db0b37-superJumbo.jpg?quality=75&auto=webp";
+const Media = () => {
+  const [files, setFiles] = useState([]);
+  const [filteredFiles, setFilteredFiles] = useState([]);
+  const { filters } = useContext(FilterContext);
+  const router = useRouter();
+  const folderId = router.query.id;
 
-const files = [
-  {
-    id: "0",
-    filename: "ai-0",
-    title: "AI Generated Image 0",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "1",
-    filename: "ai-1",
-    title: "AI Generated Image 1",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "2",
-    filename: "ai-2",
-    title: "AI Generated Image 2",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "3",
-    filename: "ai-3",
-    title: "AI Generated Image 3",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "4",
-    filename: "ai-4",
-    title: "AI Generated Image 4",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "5",
-    filename: "ai-5",
-    title: "AI Generated Image 5",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "6",
-    filename: "ai-6",
-    title: "AI Generated Image 6",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-  {
-    id: "6",
-    filename: "ai-6",
-    title: "AI Generated Image 6",
-    uploadedDate: new Date(),
-    src: AIGenerated,
-    type: "jpg",
-  },
-];
+  const getFilesFolder = (filesList) => {
+    const filesByFolder = folderId
+      ? filesList.filter((file) => file.folderId === folderId)
+      : filesList;
+    const filtered = applyFilters(filesByFolder);
+    const sorted = sortByDate(filtered);
+    return applyFilters(sorted);
+  };
 
-const Media = ({ folderId }) => {
-  // get all folder files and data
+  const sortByDate = (filesList) => {
+    return filesList.sort((fileOne, fileTwo) => {
+      return filters.date === "newest"
+        ? Number(fileTwo.uploadedDate) - Number(fileOne.uploadedDate)
+        : Number(fileOne.uploadedDate) - Number(fileTwo.uploadedDate);
+    });
+  };
+
+  const applyFilters = (filesList) => {
+    const selectedTypes = filters.filetypes
+      .filter((type) => type.selected)
+      .map((filetype) => filetype.id);
+    return filesList.filter(
+      (file) =>
+        (file.filename.includes(filters.search) || !filters.search) &&
+        (selectedTypes.includes(file.type) || !selectedTypes.length)
+    );
+  };
+
+  useEffect(() => {
+    // fetch all files
+    const allFiles = filesDefault;
+    const filesByFolder = getFilesFolder(allFiles);
+    setFiles(allFiles);
+    setFilteredFiles(filesByFolder);
+  }, [filters, folderId]);
+
+  console.log(filters.view);
 
   return (
     <>
@@ -92,13 +67,17 @@ const Media = ({ folderId }) => {
             <GrAdd />
           </button>
         </div>
-        <div className={styles.list}>
-          {files.map((file) => (
+        <div
+          className={`${
+            filters.view === "gallery" ? styles.gallery : styles.list
+          }`}
+        >
+          {filteredFiles.map((file) => (
             <>
-              <div id={file.id} className={styles.card}>
+              <div key={file.id} id={file.id} className={styles.card}>
                 {/* <div className={styles.container}>
-              <img src={file.src} alt={file.filename} />
-            </div> */}
+                  <img src={file.src} alt={file.filename} />
+                </div> */}
                 <div className={styles.footer}>
                   <div className={styles.left}>
                     <p>{file.title}</p>

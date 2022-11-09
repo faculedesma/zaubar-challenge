@@ -21,10 +21,11 @@
     }
   }
 
-  .list {
+  .gallery {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
+    gap: $standard-margin;
     flex-wrap: wrap;
     margin-top: 10px;
 
@@ -33,8 +34,6 @@
       height: 300px;
       width: 300px;
       border-radius: 10px;
-      padding-right: $standard-margin;
-      margin-bottom: 5%;
       background-color: $primary-color;
       display: inline-block;
       cursor: pointer;
@@ -123,6 +122,79 @@
       .footer, .selection {
         visibility: visible;
         animation: show-card-footer 200ms ease-in;
+      }
+    }
+  }
+
+  .list {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: $standard-margin;
+    flex-wrap: wrap;
+    margin-top: 10px;
+
+    .card {
+      height: 50px;
+      width: 300px;
+      background-color: $secondary-color-alternative;
+      padding: 0 10px;
+      border-radius: 5px;
+    }
+    
+    .container {
+      display: none;
+    }
+    
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      .right {
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        width: 60px;
+        visibility: hidden;
+
+        button {
+          height: auto;
+          width: 40%;
+          background-color: $secondary-color;
+          border: 1px solid $primary-color;
+          border-radius: 50%;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: 5px;
+          transform: scale(1);
+        }
+
+        button:hover {
+          transform: scale(1.1);
+          transition: 100ms ease-in;
+        }
+      }
+
+      .left {
+        p {
+          font-size: 10px;
+        }
+      }
+
+      .left:last-child {
+        display: none;
+      }
+    }
+
+    .card:hover {
+      .footer {
+        .right {
+          visibility: visible;
+        }
       }
     }
   }
