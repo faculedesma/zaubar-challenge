@@ -7,57 +7,45 @@ import { BsPencil } from "react-icons/bs";
 import Folders from "../folders";
 import Filters from "../filters";
 import Breadcrumbs from "../breadcrumbs";
-import { filesDefault } from "../../constants/filesDefault";
 import styles from "./Media.module.scss";
 
-const Media = () => {
-  const [files, setFiles] = useState([]);
+const Media = ({ media }) => {
+  const [files, setFiles] = useState(media?.files);
   const [filteredFiles, setFilteredFiles] = useState([]);
   const { filters } = useContext(FilterContext);
   const router = useRouter();
   const folderId = router.query.id;
 
-  const getFilesFolder = (filesList) => {
-    const filesByFolder = folderId
-      ? filesList.filter((file) => file.folderId === folderId)
-      : filesList;
-    const filtered = applyFilters(filesByFolder);
-    const sorted = sortByDate(filtered);
-    return applyFilters(sorted);
+  const applyFilters = () => {
+    const selectedTypes = filters.filetypes
+      .filter((type) => type.selected)
+      .map((filetype) => filetype.id);
+    const filtered = files?.filter(
+      (file) =>
+        (file.filename.includes(filters.search) || !filters.search) &&
+        (selectedTypes.includes(file.type) || !selectedTypes.length)
+    );
+    return sortByDate(filtered);
   };
 
-  const sortByDate = (filesList) => {
-    return filesList.sort((fileOne, fileTwo) => {
+  const sortByDate = (filtered) => {
+    return filtered?.sort((fileOne, fileTwo) => {
       return filters.date === "newest"
         ? Number(fileTwo.uploadedDate) - Number(fileOne.uploadedDate)
         : Number(fileOne.uploadedDate) - Number(fileTwo.uploadedDate);
     });
   };
 
-  const applyFilters = (filesList) => {
-    const selectedTypes = filters.filetypes
-      .filter((type) => type.selected)
-      .map((filetype) => filetype.id);
-    return filesList.filter(
-      (file) =>
-        (file.filename.includes(filters.search) || !filters.search) &&
-        (selectedTypes.includes(file.type) || !selectedTypes.length)
-    );
-  };
-
   useEffect(() => {
-    // fetch all files
-    const allFiles = filesDefault;
-    const filesByFolder = getFilesFolder(allFiles);
-    setFiles(allFiles);
-    setFilteredFiles(filesByFolder);
+    setFiles(files);
+    setFilteredFiles(applyFilters());
   }, [filters, folderId]);
 
   return (
     <>
       <Filters />
-      <Breadcrumbs />
-      <Folders />
+      <Breadcrumbs folders={media?.folders} />
+      <Folders folders={media?.folders} />
       <div className={styles.media}>
         <div className={styles.title}>
           <p>Media</p>
@@ -70,7 +58,7 @@ const Media = () => {
             filters.view === "gallery" ? styles.gallery : styles.list
           }`}
         >
-          {filteredFiles.map((file) => (
+          {filteredFiles?.map((file) => (
             <>
               <div key={file.id} id={file.id} className={styles.card}>
                 {/* <div className={styles.container}>
@@ -79,7 +67,7 @@ const Media = () => {
                 <div className={styles.footer}>
                   <div className={styles.left}>
                     <p>{file.title}</p>
-                    <p>{file.uploadedDate.toDateString()}</p>
+                    <p>{file.createdAt}</p>
                   </div>
                   <div className={styles.right}>
                     <button className={styles.edit}>

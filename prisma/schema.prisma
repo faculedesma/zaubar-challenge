@@ -10,11 +10,11 @@ datasource db {
 }
 
 model User {
-  id      String @id @default(uuid())
-  email   String @unique
-  name    String
-  surname String
-  files   File[]
+  id       String @id @default(uuid())
+  email    String
+  username String @unique
+  password String
+  File     File[]
 }
 
 model File {
@@ -25,6 +25,23 @@ model File {
   transcodedImage String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+  folderId        String?
+  folder          Folder?  @relation(fields: [folderId], references: [id], onDelete: SetNull, onUpdate: NoAction)
   userId          String
   user            User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([folderId])
+}
+
+model Folder {
+  id          String   @id @default(uuid())
+  name        String
+  breadcrumbs String?
+  File        File[]
+  subfolders  Folder[] @relation("subFolders")
+  parent      Folder?  @relation("subFolders", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parentId    String?
+
+  @@index([parentId])
 }

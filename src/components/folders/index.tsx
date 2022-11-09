@@ -3,24 +3,14 @@ import { useRouter } from "next/router";
 import Link from "next/link";
 import { MdFolderOpen } from "react-icons/md";
 import { BiFolderPlus } from "react-icons/bi";
-import { foldersMock } from "../../constants/folders";
 import Modal from "../common/modal";
 import CreateFolderForm from "./CreateFolderForm";
 import styles from "./Folders.module.scss";
 
-const Folders = () => {
+const Folders = ({ folders }) => {
   const router = useRouter();
   const folderId = router.query.id;
-  const [folders, setFolders] = useState([]);
   const [open, setOpen] = useState(false);
-
-  useEffect(() => {
-    if (!folderId) {
-      setFolders(foldersMock.filter((folder) => !folder.parentId));
-      return;
-    }
-    setFolders(foldersMock.filter((folder) => folder.parentId === folderId));
-  }, [folderId]);
 
   const openCreateModal = () => setOpen(true);
 
@@ -30,7 +20,7 @@ const Folders = () => {
     <div className={styles.folders}>
       <p className={styles.title}>Folders</p>
       <div className={styles.list}>
-        {folders.map((folder) => (
+        {folders?.map((folder) => (
           <Link
             key={folder.id}
             href={{

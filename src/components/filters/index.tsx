@@ -118,7 +118,7 @@ const Filters = () => {
         <div className={styles.options}>
           <div className={styles.boxes}>
             {filetypes.map((option) => (
-              <div className={styles.box}>
+              <div key={option.id} className={styles.box}>
                 <input
                   type="checkbox"
                   id={option.id}
@@ -142,7 +142,7 @@ const Filters = () => {
         <div className={styles.options}>
           <div className={styles.boxes}>
             {datesOptions.map((option) => (
-              <div className={styles.box}>
+              <div key={option.id} className={styles.box}>
                 <input
                   type="checkbox"
                   id={option.id}
